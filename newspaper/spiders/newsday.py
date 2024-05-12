@@ -77,27 +77,23 @@ class Standard(scrapy.Spider):
 
     def parse(self, response):
         # Extract category
-        category = response.css('div.brand-title h2 a.links::text').get()
+        category = response.css('div.category-title h2 a.links::text').get()
+        title = response.css('div.card-body h3.mb-3::text').extract()
+        link = response.css('div.card-body.pad-o.mt-3 a::attr(href)').extract()
+        content = response.css('div.post-excerpt p::text').extract()
 
-        # Extract data from each article
-        articles = response.css('div.card-body')
-
-        for article in articles:
-            # Extract title and link
-            title = article.css('h3.mb-3 a::text').get()
-            link = article.css('h3.mb-3 a::attr(href)').get()
-
-            # Extract content
-            content = article.css('div.mb-3.pt-2.top-article::text').get()
-            # Create a dictionary to store the scraped info
+        row_data = zip(title,link,content)
+            
+        #Making extracted data row wise
+        for item in row_data:
+            #create a dictionary to store the scraped info
             scraped_info = {
-                'category': category,
-                'title': title.strip() if title else None,
-                'link': link.strip() if link else None,
-                'content': content
+                    #key:value
+                'category':category,
+                'title' : item[0],
+                'link' : item[1],
+                'content' : item[2]
             }
 
-            # Yield the scraped info to Scrapy
-            yield scraped_info
-            # Yield the scraped info to Scrapy
+                #yield or give the scraped info to scrapy
             yield scraped_info
