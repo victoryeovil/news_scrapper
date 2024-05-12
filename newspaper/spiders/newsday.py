@@ -1,4 +1,8 @@
 import scrapy
+from scrapy_splash import SplashRequest
+from scrapy.spidermiddlewares.httperror import HttpError
+from twisted.internet.error import DNSLookupError
+from twisted.internet.error import TimeoutError, TCPTimedOutError
 
 class NewsDaySpider(scrapy.Spider):
     name = 'newsday_spider'
@@ -66,7 +70,9 @@ class Fingaz(scrapy.Spider):
             # Yield the scraped info to Scrapy
             yield scraped_info
             
-class Standard(scrapy.Spider):
+
+
+class StandardSpider(scrapy.Spider):
     name = 'standard'
     start_urls = [
         'https://www.newsday.co.zw/thestandard/category/18/business',
@@ -76,24 +82,45 @@ class Standard(scrapy.Spider):
     ]
 
     def parse(self, response):
-        # Extract category
-        category = response.css('div.category-title h2 a.links::text').get()
-        title = response.css('div.card-body h3.mb-3::text').extract()
-        link = response.css('div.card-body.pad-o.mt-3 a::attr(href)').extract()
-        content = response.css('div.post-excerpt p::text').extract()
+        # Extract category from the updated structure
+        category = response.css('div.brand-title h2 a.links::text').get() 
 
-        row_data = zip(title,link,content)
-            
-        #Making extracted data row wise
-        for item in row_data:
-            #create a dictionary to store the scraped info
+        for article in response.css('div.card-body'):
+            title = article.css('h3.mb-3 ::text').get()
+            link = article.css('a.text-dark::attr(href)').get()
+            content = article.css('div.mb-3.pt-2.top-article ::text').get() 
+
             scraped_info = {
-                    #key:value
-                'category':category,
-                'title' : item[0],
-                'link' : item[1],
-                'content' : item[2]
+                'category': category,
+                'title': title,
+                'link': link,
+                'content': content
             }
+            yield scraped_info
 
-                #yield or give the scraped info to scrapy
+
+class Reuters(scrapy.Spider):
+    name = 'reuters'
+    start_urls = [
+        'https://www.herald.co.zw/category/articles/business/',
+        'https://www.herald.co.zw/category/articles/sport/',
+        'https://www.herald.co.zw/category/articles/opinion-a-analysis/',
+        'https://www.herald.co.zw/category/articles/crime-and-courts/'
+    ]
+
+    def parse(self, response):
+        # Extract category from the updated structure
+        category = response.css('div.brand-title h2 a.links::text').get() 
+
+        for article in response.css('div.card-body'):
+            title = article.css('h3.mb-3 ::text').get()
+            link = article.css('a.text-dark::attr(href)').get()
+            content = article.css('div.mb-3.pt-2.top-article ::text').get() 
+
+            scraped_info = {
+                'category': category,
+                'title': title,
+                'link': link,
+                'content': content
+            }
             yield scraped_info
