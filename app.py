@@ -21,8 +21,8 @@ cluster_names = {0: "Business", 1: "Politics", 2: "Arts", 3: "Sport"}
 combined_df['cluster_name'] = combined_df['cluster'].map(cluster_names)
 
 # Streamlit App
-st.title("Story Clustering Platform")
-st.markdown("This platform displays clusters and related stories.")
+st.title("News Clustering Platform by Victor Marisa R207764L")
+st.markdown("This web displays clusters and related stories. ")
 
 # Cluster selection
 selected_cluster = st.selectbox("Select a cluster", combined_df['cluster_name'].unique())
