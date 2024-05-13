@@ -49,7 +49,8 @@ This project uses Scrapy spiders to gather news articles from several Zimbabwean
 
 2. **Install Requirements:**
 
-    ```(env) pip install -r requirements.txt
+    ```
+    (env) pip install -r requirements.txt
     ```
 
 # Collecting the Data
