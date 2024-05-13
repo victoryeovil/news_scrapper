@@ -124,3 +124,34 @@ class Reuters(scrapy.Spider):
                 'content': content
             }
             yield scraped_info
+
+
+class ZimMail(scrapy.Spider):
+    name = 'zimmail'
+    start_urls = [
+        'https://www.thezimbabwemail.com/category/sports/',
+        'https://www.thezimbabwemail.com/category/business/',
+        'https://www.thezimbabwemail.com/category/entertainment/',
+        'https://www.thezimbabwemail.com/category/politics/'
+    ]
+    def parse(self, response):
+        # Extract data from each article
+            category = response.css('h1.page-title::text').get() 
+            title = response.css('.entry-title a::text').extract()
+            link = response.css('.entry-title a::attr(href)').extract()
+            content = response.css('.mh-excerpt p::text').extract() 
+            row_data = zip(title,link,content)
+            
+        #Making extracted data row wise
+            for item in row_data:
+                #create a dictionary to store the scraped info
+                scraped_info = {
+                    #key:value
+                    'category':category,
+                    'title' : item[0],
+                    'link' : item[1],
+                    'content' : item[2]
+                }
+
+                #yield or give the scraped info to scrapy
+                yield scraped_info
