@@ -24,6 +24,24 @@ combined_df['cluster_name'] = combined_df['cluster'].map(cluster_names)
 st.title("News Clustering Platform by Victor Marisa R207764L")
 st.markdown("This web displays clusters and related stories. ")
 
+st.markdown(
+    """
+    <div style="display: flex; justify-content: space-around;">
+        <a href="https://github.com/victoryeovil/news_scrapper/" target="_blank">
+            <button style="background-color: #24292f; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+                GitHub
+            </button>
+        </a>
+        <a href="https://colab.research.google.com/" target="_blank">
+            <button style="background-color: #4285f4; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+                Google Colab
+            </button>
+        </a>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
 # Cluster selection
 selected_cluster = st.selectbox("Select a cluster", combined_df['cluster_name'].unique())
 cluster_data = combined_df[combined_df['cluster_name'] == selected_cluster]
