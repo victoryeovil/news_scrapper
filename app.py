@@ -30,7 +30,7 @@ cluster_data = combined_df[combined_df['cluster_name'] == selected_cluster]
 
 # Display related stories
 st.subheader("Related Stories:")
-for url in cluster_data['url']:
+for url in cluster_data['link']:
     st.write(url)
 
 # Cluster analysis
