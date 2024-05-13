@@ -22,7 +22,7 @@ combined_df['cluster_name'] = combined_df['cluster'].map(cluster_names)
 
 # Streamlit App
 st.title("News Clustering Platform by Victor Marisa R207764L")
-st.markdown("This web displays clusters and related stories. ")
+st.markdown("This web displays clusters and related stories. Source code is found through clicking the two buttons. The spyders are found in github and the colab is used to clean the data and create a csv to work with for clustering using this streamlit app")
 
 st.markdown(
     """
@@ -32,7 +32,7 @@ st.markdown(
                 GitHub
             </button>
         </a>
-        <a href="https://colab.research.google.com/" target="_blank">
+        <a href="https://colab.research.google.com/drive/1THIg-cdgeisjlGyzUW2D6OTgTk3F8A6j?usp=sharing" target="_blank">
             <button style="background-color: #4285f4; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
                 Google Colab
             </button>
@@ -61,7 +61,7 @@ for cluster_name in combined_df['cluster_name'].unique():
     # Handle missing columns gracefully
     if 'section' in combined_df.columns:
         st.write(f"- Top categories: {cluster_data['section'].value_counts().head(3)}")
-    if 'keywords' in combined_df.columns:
+    if 'title' in combined_df.columns:
         st.write(f"- Top keywords: {cluster_data['title'].str.split(',').explode().value_counts().head(3)}")
 
 
